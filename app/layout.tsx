@@ -17,6 +17,12 @@ export const metadata: Metadata = {
   description: "Track real-time stock prices, get personalised alerts and explore detailed company insights.",
 };
 
+/**
+ * Provides the application's root HTML layout, applying global font variables and a dark theme while rendering page content.
+ *
+ * @param children - The page or application content to render inside the document body
+ * @returns The root HTML structure (`<html>` with `<body>`) for the application
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
