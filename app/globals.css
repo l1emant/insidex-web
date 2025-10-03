@@ -37,6 +37,18 @@
     --color-popover: var(--popover);
     --color-card-foreground: var(--card-foreground);
     --color-card: var(--card);
+    /* Map Tailwind named palette to our custom palette so utilities like text-gray-400 and text-yellow-500 follow the theme */
+    --color-gray-100: #EEEEEE;
+    --color-gray-400: #CFCFCF;
+    --color-gray-500: #B5B5B5;
+    --color-gray-600: #8A8A8A;
+    --color-gray-700: #555555;
+    --color-gray-800: #111111;
+    --color-yellow-400: #08CB00;
+    --color-yellow-500: #08CB00;
+    
+    /* Optional: map green to primary as well for consistency */
+    --color-green-500: #08CB00;
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
     --radius-lg: var(--radius);
@@ -45,91 +57,95 @@
 
 :root {
     --radius: 0.625rem;
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.129 0.042 264.695);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.129 0.042 264.695);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.129 0.042 264.695);
-    --primary: oklch(0.208 0.042 265.755);
-    --primary-foreground: oklch(0.984 0.003 247.858);
-    --secondary: oklch(0.968 0.007 247.896);
-    --secondary-foreground: oklch(0.208 0.042 265.755);
-    --muted: oklch(0.968 0.007 247.896);
-    --muted-foreground: oklch(0.554 0.046 257.417);
-    --accent: oklch(0.968 0.007 247.896);
-    --accent-foreground: oklch(0.208 0.042 265.755);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.929 0.013 255.508);
-    --input: oklch(0.929 0.013 255.508);
-    --ring: oklch(0.704 0.04 256.788);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --sidebar: oklch(0.984 0.003 247.858);
-    --sidebar-foreground: oklch(0.129 0.042 264.695);
-    --sidebar-primary: oklch(0.208 0.042 265.755);
-    --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-    --sidebar-accent: oklch(0.968 0.007 247.896);
-    --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-    --sidebar-border: oklch(0.929 0.013 255.508);
-    --sidebar-ring: oklch(0.704 0.04 256.788);
+    /* Base palette */
+    --background: #000000;
+    --foreground: #EEEEEE;
+    --card: #000000;
+    --card-foreground: #EEEEEE;
+    --popover: #000000;
+    --popover-foreground: #EEEEEE;
+    --primary: #08CB00;
+    --primary-foreground: #000000; /* high contrast on green */
+    --secondary: #253900;
+    --secondary-foreground: #EEEEEE;
+    --muted: #111111; /* subtle surfaces */
+    --muted-foreground: #B5B5B5;
+    --accent: #08CB00;
+    --accent-foreground: #000000;
+    --destructive: #FF5555; /* keep a red for errors */
+    --border: #EEEEEE;
+    --input: #EEEEEE;
+    --ring: #08CB00;
+    /* Charts inherit new palette */
+    --chart-1: #08CB00; /* primary */
+    --chart-2: #4AE83F; /* lighter primary */
+    --chart-3: #253900; /* secondary */
+    --chart-4: #7AFF70; /* accent variant */
+    --chart-5: #B5B5B5; /* neutral */
+    /* Sidebar */
+    --sidebar: #000000;
+    --sidebar-foreground: #EEEEEE;
+    --sidebar-primary: #08CB00;
+    --sidebar-primary-foreground: #000000;
+    --sidebar-accent: #08CB00;
+    --sidebar-accent-foreground: #000000;
+    --sidebar-border: #EEEEEE;
+    --sidebar-ring: #08CB00;
 }
 
 .dark {
-    --background: oklch(0.129 0.042 264.695);
-    --foreground: oklch(0.984 0.003 247.858);
-    --card: oklch(0.208 0.042 265.755);
-    --card-foreground: oklch(0.984 0.003 247.858);
-    --popover: oklch(0.208 0.042 265.755);
-    --popover-foreground: oklch(0.984 0.003 247.858);
-    --primary: oklch(0.929 0.013 255.508);
-    --primary-foreground: oklch(0.208 0.042 265.755);
-    --secondary: oklch(0.279 0.041 260.031);
-    --secondary-foreground: oklch(0.984 0.003 247.858);
-    --muted: oklch(0.279 0.041 260.031);
-    --muted-foreground: oklch(0.704 0.04 256.788);
-    --accent: oklch(0.279 0.041 260.031);
-    --accent-foreground: oklch(0.984 0.003 247.858);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.551 0.027 264.364);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.208 0.042 265.755);
-    --sidebar-foreground: oklch(0.984 0.003 247.858);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-    --sidebar-accent: oklch(0.279 0.041 260.031);
-    --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.551 0.027 264.364);
+    /* Dark mode follows the same palette to keep a unified theme */
+    --background: #000000;
+    --foreground: #EEEEEE;
+    --card: #000000;
+    --card-foreground: #EEEEEE;
+    --popover: #000000;
+    --popover-foreground: #EEEEEE;
+    --primary: #08CB00;
+    --primary-foreground: #000000;
+    --secondary: #253900;
+    --secondary-foreground: #EEEEEE;
+    --muted: #111111;
+    --muted-foreground: #B5B5B5;
+    --accent: #08CB00;
+    --accent-foreground: #000000;
+    --destructive: #FF5555;
+    --border: #EEEEEE;
+    --input: #EEEEEE;
+    --ring: #08CB00;
+    --chart-1: #08CB00;
+    --chart-2: #4AE83F;
+    --chart-3: #253900;
+    --chart-4: #7AFF70;
+    --chart-5: #B5B5B5;
+    --sidebar: #000000;
+    --sidebar-foreground: #EEEEEE;
+    --sidebar-primary: #08CB00;
+    --sidebar-primary-foreground: #000000;
+    --sidebar-accent: #08CB00;
+    --sidebar-accent-foreground: #000000;
+    --sidebar-border: #EEEEEE;
+    --sidebar-ring: #08CB00;
 }
 
 /* === CUSTOM COLOR THEME === */
 @theme {
-    /* Extended Gray Scale */
-    --color-gray-900: #050505;
-    --color-gray-800: #141414;
-    --color-gray-700: #212328;
-    --color-gray-600: #30333A;
-    --color-gray-500: #9095A1;
-    --color-gray-400: #CCDADC;
+    /* Extended Gray Scale mapped to new palette */
+    --color-gray-900: #000000; /* background */
+    --color-gray-800: #111111; /* muted surface */
+    --color-gray-700: #555555; /* deeper muted */
+    --color-gray-600: #8A8A8A; /* borders/muted */
+    --color-gray-500: #B5B5B5; /* muted-foreground */
+    --color-gray-400: #CFCFCF; /* lighter muted */
 
     /* Vibrant Colors */
-    --color-blue-600: #5862FF;
-    --color-yellow-400: #FDD458;
-    --color-yellow-500: #E8BA40;
-    --color-teal-400: #0FEDBE;
-    --color-red-500: #FF495B;
-    --color-orange-500: #FF8243;
-    --color-purple-500: #D13BFF;
+    --color-blue-600: #5862FF; /* unchanged */
+    --color-yellow-400: #08CB00; /* map yellow to primary */
+    --color-yellow-500: #08CB00; /* map yellow to primary */
+    --color-teal-400: #0FEDBE; /* unchanged */
+    --color-red-500: #FF495B; /* unchanged */
+    --color-orange-500: #FF8243; /* unchanged */
+    --color-purple-500: #D13BFF; /* unchanged */
 }
 
 @layer base {
@@ -137,7 +153,7 @@
         @apply border-border outline-ring/50;
     }
     body {
-        @apply bg-gray-900 text-foreground;
+        @apply bg-background text-foreground;
     }
 }
 
@@ -389,32 +405,32 @@
 }
 
 /* TradingView Advanced Chart Widget Styles */
-.tradingview-widget-container {
+ .tradingview-widget-container {
     position: relative;
-    background-color: #141414 !important;
+    background-color: var(--background) !important;
     border-radius: 8px !important;
     overflow: hidden !important;
 }
 
 .tv-embed-widget-wrapper__body {
-    background-color: #141414 !important;
+    background-color: var(--background) !important;
 }
 
 .tradingview-widget-container__widget {
-    background-color: #141414 !important;
+    background-color: var(--background) !important;
     height: 100% !important;
 
 }
 
 .widget-stock-heatmap-container .screenerMapWrapper-BBVfGP0b {
     overflow: hidden !important;
-    background: #141414 !important;
-    background-color: #141414 !important;
+    background: var(--background) !important;
+    background-color: var(--background) !important;
 }
 
 .canvasContainer-tyaAU8aH {
-    background: #141414 !important;
-    background-color: #141414 !important;
+    background: var(--background) !important;
+    background-color: var(--background) !important;
 }
 
 .tv-site-widget--bg_none {
@@ -441,8 +457,8 @@
 }
 
 .tv-embed-widget-wrapper .tv-embed-widget-wrapper__body {
-    background: #141414 !important;
-    background-color: #141414 !important;
+    background: var(--background) !important;
+    background-color: var(--background) !important;
 }
 
 .tradingview-widget-container iframe {
