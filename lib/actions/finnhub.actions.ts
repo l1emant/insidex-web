@@ -3,7 +3,7 @@
 import { getDateRange, validateArticle, formatArticle } from '@/lib/utils';
 import { POPULAR_STOCK_SYMBOLS } from '@/lib/constants';
 import { cache } from 'react';
-import { auth } from '../better-auth/auth';
+import { getAuth } from '../better-auth/auth';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getWatchlistSymbolsByEmail } from './watchlist.actions';
@@ -116,6 +116,12 @@ export async function getNews(symbols?: string[]): Promise<MarketNewsArticle[]> 
 export const searchStocks = cache(
   async (query?: string): Promise<StockWithWatchlistStatus[]> => {
     try {
+      const auth = await getAuth();
+      if (!auth || !auth.api) {
+        console.warn('Auth not available, returning empty results');
+        return [];
+      }
+      
       const session = await auth.api.getSession({
         headers: await headers(),
       });
@@ -324,6 +330,7 @@ export const getStocksDetails = cache(async (symbol: string) => {
 // Get user's watchlist
 export const getUserWatchlist = async () => {
   try {
+    const auth = await getAuth();
     const session = await auth.api.getSession({
       headers: await headers(),
     });
@@ -346,6 +353,7 @@ export const getUserWatchlist = async () => {
 // Get user's watchlist with stock data
 export const getWatchlistWithData = async () => {
   try {
+    const auth = await getAuth();
     const session = await auth.api.getSession({
       headers: await headers(),
     });
