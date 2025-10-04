@@ -1,43 +1,54 @@
 'use server';
 
-import {auth} from "@/lib/better-auth/auth";
+import {getAuth} from "@/lib/better-auth/auth";
 import {inngest} from "@/lib/inngest/client";
 import {headers} from "next/headers";
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { Watchlist } from "@/database/models/watchlist.model";
 
 
 export const signUpWithEmail = async ({ email, password, fullName, country, investmentGoals, riskTolerance, preferredIndustry }: SignUpFormData) => {
     try {
+        const auth = await getAuth();
         const response = await auth.api.signUpEmail({ body: { email, password, name: fullName } })
 
-        if(response) {
+        if(response && response.user) {
             await inngest.send({
                 name: 'app/user.created',
                 data: { email, name: fullName, country, investmentGoals, riskTolerance, preferredIndustry }
             })
+            return { success: true, data: response }
+        } else {
+            return { success: false, error: 'Failed to create user account' }
         }
-
-        return { success: true, data: response }
-    } catch (e) {
+    } catch (e: unknown) {
         console.log('Sign up failed', e)
-        return { success: false, error: 'Sign up failed' }
+        const errorMessage = e instanceof Error ? e.message : 'Sign up failed'
+        return { success: false, error: errorMessage }
     }
 }
 
 export const signInWithEmail = async ({ email, password }: SignInFormData) => {
     try {
+        const auth = await getAuth();
         const response = await auth.api.signInEmail({ body: { email, password } })
 
-        return { success: true, data: response }
-    } catch (e) {
+        if(response && response.user) {
+            return { success: true, data: response }
+        } else {
+            return { success: false, error: 'Invalid email or password' }
+        }
+    } catch (e: unknown) {
         console.log('Sign in failed', e)
-        return { success: false, error: 'Sign in failed' }
+        const errorMessage = e instanceof Error ? e.message : 'Sign in failed'
+        return { success: false, error: errorMessage }
     }
 }
 
 export const signOut = async () => {
     try {
+        const auth = await getAuth();
         await auth.api.signOut({ headers: await headers() });
         return { success: true };
     } catch (e) {
@@ -49,6 +60,7 @@ export const signOut = async () => {
 // Add stock to watchlist
 export const addToWatchlist = async (symbol: string, company: string) => {
   try {
+    const auth = await getAuth();
     const session = await auth.api.getSession({
       headers: await headers(),
     });
@@ -84,6 +96,7 @@ export const addToWatchlist = async (symbol: string, company: string) => {
 // Remove stock from watchlist
 export const removeFromWatchlist = async (symbol: string) => {
   try {
+    const auth = await getAuth();
     const session = await auth.api.getSession({
       headers: await headers(),
     });

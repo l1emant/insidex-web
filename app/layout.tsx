@@ -16,8 +16,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Signalist",
+  title: "InsideX",
   description: "Track real-time stock prices, get personalised alerts and explore detailed company insights.",
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
@@ -30,7 +33,23 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="min-h-screen w-full relative bg-black">
+           {/* Subtle Background */}
+           <div
+             className="absolute inset-0 z-0"
+             style={{
+               background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(107, 114, 128, 0.05), transparent 70%), #000000",
+             }}
+           />
+          
+          {/* Background Blur Overlay */}
+          <div className="absolute inset-0 z-5 backdrop-blur-sm bg-black/20" />
+          
+          {/* Content/Components */}
+          <div className="relative z-10">
+            {children}
+          </div>
+        </div>
         <Toaster />
         <Analytics />
       </body>

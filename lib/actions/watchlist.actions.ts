@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { auth } from '../better-auth/auth';
+import { getAuth } from '../better-auth/auth';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { connectToDatabase } from '@/database/mongoose';
@@ -34,6 +34,7 @@ export async function getWatchlistSymbolsByEmail(email: string): Promise<string[
 // Add stock to watchlist
 export const addToWatchlist = async (symbol: string, company: string) => {
   try {
+    const auth = await getAuth();
     const session = await auth.api.getSession({
       headers: await headers(),
     });
@@ -69,6 +70,7 @@ export const addToWatchlist = async (symbol: string, company: string) => {
 // Remove stock from watchlist
 export const removeFromWatchlist = async (symbol: string) => {
   try {
+    const auth = await getAuth();
     const session = await auth.api.getSession({
       headers: await headers(),
     });

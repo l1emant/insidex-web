@@ -8,27 +8,60 @@ let authInstance: ReturnType<typeof betterAuth> | null = null;
 export const getAuth = async () => {
     if(authInstance) return authInstance;
 
-    const mongoose = await connectToDatabase();
-    const db = mongoose.connection.db;
+    try {
+        const mongoose = await connectToDatabase();
+        const db = mongoose.connection.db;
 
-    if(!db) throw new Error('MongoDB connection not found');
-
-    authInstance = betterAuth({
-        database: mongodbAdapter(db as any),
-        secret: process.env.BETTER_AUTH_SECRET,
-        baseURL: process.env.BETTER_AUTH_URL,
-        emailAndPassword: {
-            enabled: true,
-            disableSignUp: false,
-            requireEmailVerification: false,
-            minPasswordLength: 8,
-            maxPasswordLength: 128,
-            autoSignIn: true,
-        },
-        plugins: [nextCookies()],
-    });
+        if(!db) {
+            console.warn('MongoDB connection not found, using memory adapter');
+            // Use memory adapter as fallback
+            authInstance = betterAuth({
+                secret: process.env.BETTER_AUTH_SECRET || 'fallback-secret-key',
+                baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
+                emailAndPassword: {
+                    enabled: true,
+                    disableSignUp: false,
+                    requireEmailVerification: false,
+                    minPasswordLength: 8,
+                    maxPasswordLength: 128,
+                    autoSignIn: true,
+                },
+                plugins: [nextCookies()],
+            });
+        } else {
+            console.log('✅ Using MongoDB adapter for Better Auth');
+            authInstance = betterAuth({
+                database: mongodbAdapter(db as any),
+                secret: process.env.BETTER_AUTH_SECRET || 'fallback-secret-key',
+                baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
+                emailAndPassword: {
+                    enabled: true,
+                    disableSignUp: false,
+                    requireEmailVerification: false,
+                    minPasswordLength: 8,
+                    maxPasswordLength: 128,
+                    autoSignIn: true,
+                },
+                plugins: [nextCookies()],
+            });
+        }
+    } catch (error) {
+        console.error('Auth initialization failed:', error);
+        // Fallback auth configuration
+        authInstance = betterAuth({
+            secret: process.env.BETTER_AUTH_SECRET || 'fallback-secret-key',
+            baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
+            emailAndPassword: {
+                enabled: true,
+                disableSignUp: false,
+                requireEmailVerification: false,
+                minPasswordLength: 8,
+                maxPasswordLength: 128,
+                autoSignIn: true,
+            },
+            plugins: [nextCookies()],
+        });
+    }
 
     return authInstance;
 }
-
-export const auth = await getAuth();
